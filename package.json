@@ -1,0 +1,11 @@
+{
+  "name": "adventofcode",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jeremi Stadler",
+  "license": "MIT",
+  "dependencies": {
+    "@types/node": "^14.14.10",
+    "nodemon": "^2.0.6"
+  }
+}

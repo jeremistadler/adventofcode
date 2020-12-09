@@ -48,18 +48,18 @@ function part1() {
 }
 
 function part2() {
-  let canContain = name => {
-    let val = map.get(name)
+  let countBags = name => {
+    let items = map.get(name).items
     let sum = 1
 
-    for (let t of val.items) {
-      sum += canContain(t.name) * t.count
+    for (let t of items) {
+      sum += countBags(t.name) * t.count
     }
 
     return sum
   }
 
-  console.log('Part2', canContain('shiny gold bags') - 1)
+  console.log('Part2', countBags('shiny gold bags') - 1)
 }
 
 part1()

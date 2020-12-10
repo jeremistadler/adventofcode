@@ -13,7 +13,6 @@ lines.push(lines[lines.length - 1] + 3)
 let diff1 = 0
 let diff3 = 0
 let last = 0
-let cache = {}
 
 for (let i = 0; i < lines.length; i++) {
   const diff = lines[i] - last
@@ -23,8 +22,9 @@ for (let i = 0; i < lines.length; i++) {
   if (diff === 3) diff3++
 }
 
+let cache = new Map()
 function sumItems(i) {
-  if (cache[i]) return cache[i]
+  if (cache.has(i)) return cache.get(i)
   let sum = 0
 
   for (let ii = i + 1; ii < lines.length; ii++) {
@@ -34,7 +34,7 @@ function sumItems(i) {
     }
   }
 
-  cache[i] = sum
+  cache.set(i, sum)
   return sum
 }
 

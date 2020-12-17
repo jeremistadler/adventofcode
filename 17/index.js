@@ -8,51 +8,13 @@ let input = require('fs')
 function part1() {
   let current = new Map()
   let next = new Map()
-
-  input.forEach((line, lineIndex) => {
-    line.forEach((letter, letterIndex) => {
-      if (letter === '#')
-        current.set(xyzToMap(letterIndex, lineIndex, 0), [
-          letterIndex,
-          lineIndex,
-          0,
-        ])
-    })
-  })
-
   let checked = new Set()
 
-  function checkItem(x, y, z) {
-    let count = countNeightbours(current, x, y, z)
-    const index = xyzToMap(x, y, z)
-    let c = current.has(index)
-
-    // if (z === 0 && y === 1 && x === 2) console.log({x, y, z, count, index, c})
-
-    if (c === true) {
-      if (count === 2 || count === 3) {
-        next.set(index, [x, y, z])
-      }
-    } else {
-      if (count === 3) {
-        next.set(index, [x, y, z])
-      }
-    }
-
-    if (count === 0) return
-
-    for (let xx = x - 1; xx <= x + 1; xx++) {
-      for (let yy = y - 1; yy <= y + 1; yy++) {
-        for (let zz = z - 1; zz <= z + 1; zz++) {
-          const i = xyzToMap(xx, yy, zz)
-          if (checked.has(i) === false) {
-            checked.add(i)
-            checkItem(xx, yy, zz)
-          }
-        }
-      }
-    }
-  }
+  input.forEach((line, y) => {
+    line.forEach((letter, x) => {
+      if (letter === '#') current.set(xyzToMap(x, y, 0), [x, y, 0])
+    })
+  })
 
   for (let i = 0; ; i++) {
     next.clear()
@@ -70,6 +32,35 @@ function part1() {
     if (i === 5) return current.size
   }
 
+  function checkItem(x, y, z) {
+    let count = countNeightbours(current, x, y, z)
+    if (count === 0) return
+
+    const index = xyzToMap(x, y, z)
+
+    if (current.has(index) === true) {
+      if (count === 2 || count === 3) {
+        next.set(index, [x, y, z])
+      }
+    } else {
+      if (count === 3) {
+        next.set(index, [x, y, z])
+      }
+    }
+
+    for (let xx = x - 1; xx <= x + 1; xx++) {
+      for (let yy = y - 1; yy <= y + 1; yy++) {
+        for (let zz = z - 1; zz <= z + 1; zz++) {
+          const i = xyzToMap(xx, yy, zz)
+          if (checked.has(i) === false) {
+            checked.add(i)
+            checkItem(xx, yy, zz)
+          }
+        }
+      }
+    }
+  }
+
   function countNeightbours(grid, x, y, z) {
     let count = 0
 
@@ -81,6 +72,7 @@ function part1() {
             grid.has(xyzToMap(xx, yy, zz))
           ) {
             count++
+            if (count === 4) return count
           }
         }
       }
@@ -98,52 +90,14 @@ function part2() {
   let current = new Map()
   let next = new Map()
 
-  input.forEach((line, lineIndex) => {
-    line.forEach((letter, letterIndex) => {
-      if (letter === '#')
-        current.set(xyzwToMap(letterIndex, lineIndex, 0, 0), [
-          letterIndex,
-          lineIndex,
-          0,
-          0,
-        ])
-    })
-  })
-
   let checked = new Set()
   let queue = []
 
-  function checkItem(x, y, z, w) {
-    let count = countNeightbours(current, x, y, z, w)
-    const index = xyzwToMap(x, y, z, w)
-    let c = current.has(index)
-
-    if (c === true) {
-      if (count === 2 || count === 3) {
-        next.set(index, [x, y, z, w])
-      }
-    } else {
-      if (count === 3) {
-        next.set(index, [x, y, z, w])
-      }
-    }
-
-    if (count === 0) return
-
-    for (let xx = x - 1; xx <= x + 1; xx++) {
-      for (let yy = y - 1; yy <= y + 1; yy++) {
-        for (let zz = z - 1; zz <= z + 1; zz++) {
-          for (let ww = w - 1; ww <= w + 1; ww++) {
-            const i = xyzwToMap(xx, yy, zz, ww)
-            if (checked.has(i) === false) {
-              checked.add(i)
-              queue.push([xx, yy, zz, ww])
-            }
-          }
-        }
-      }
-    }
-  }
+  input.forEach((line, y) => {
+    line.forEach((letter, x) => {
+      if (letter === '#') current.set(xyzwToMap(x, y, 0, 0), [x, y, 0, 0])
+    })
+  })
 
   for (let i = 0; ; i++) {
     next.clear()
@@ -169,6 +123,37 @@ function part2() {
     if (i === 5) return current.size
   }
 
+  function checkItem(x, y, z, w) {
+    let count = countNeightbours(current, x, y, z, w)
+    if (count === 0) return
+
+    const index = xyzwToMap(x, y, z, w)
+
+    if (current.has(index) === true) {
+      if (count === 2 || count === 3) {
+        next.set(index, [x, y, z, w])
+      }
+    } else {
+      if (count === 3) {
+        next.set(index, [x, y, z, w])
+      }
+    }
+
+    for (let xx = x - 1; xx <= x + 1; xx++) {
+      for (let yy = y - 1; yy <= y + 1; yy++) {
+        for (let zz = z - 1; zz <= z + 1; zz++) {
+          for (let ww = w - 1; ww <= w + 1; ww++) {
+            const i = xyzwToMap(xx, yy, zz, ww)
+            if (checked.has(i) === false) {
+              checked.add(i)
+              queue.push([xx, yy, zz, ww])
+            }
+          }
+        }
+      }
+    }
+  }
+
   function countNeightbours(grid, x, y, z, w) {
     let count = 0
 
@@ -181,6 +166,7 @@ function part2() {
               grid.has(xyzwToMap(xx, yy, zz, ww))
             ) {
               count++
+              if (count === 4) return count
             }
           }
         }
@@ -191,7 +177,6 @@ function part2() {
   }
 
   function xyzwToMap(x, y, z, w) {
-    if (typeof w === 'undefined' || isNaN(w)) throw new Error('Is Nan!')
     return w * 1000000000 + x * 1000000 + y * 1000 + z
   }
 }

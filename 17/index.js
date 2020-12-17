@@ -8,7 +8,8 @@ let input = require('fs')
 function part1() {
   let current = new Map()
   let next = new Map()
-  let checked = new Set()
+
+  let seenTiles = new Set()
 
   input.forEach((line, y) => {
     line.forEach((letter, x) => {
@@ -18,11 +19,11 @@ function part1() {
 
   for (let i = 0; ; i++) {
     next.clear()
-    checked.clear()
+    seenTiles.clear()
 
     for (const [, item] of current) {
       let [x, y, z] = item
-      checkItem(x, y, z)
+      updateTile(x, y, z)
     }
 
     let tmp = next
@@ -32,7 +33,7 @@ function part1() {
     if (i === 5) return current.size
   }
 
-  function checkItem(x, y, z) {
+  function updateTile(x, y, z) {
     let count = countNeightbours(current, x, y, z)
     if (count === 0) return
 
@@ -52,9 +53,9 @@ function part1() {
       for (let yy = y - 1; yy <= y + 1; yy++) {
         for (let zz = z - 1; zz <= z + 1; zz++) {
           const i = xyzToMap(xx, yy, zz)
-          if (checked.has(i) === false) {
-            checked.add(i)
-            checkItem(xx, yy, zz)
+          if (seenTiles.has(i) === false) {
+            seenTiles.add(i)
+            updateTile(xx, yy, zz)
           }
         }
       }
@@ -90,7 +91,7 @@ function part2() {
   let current = new Map()
   let next = new Map()
 
-  let checked = new Set()
+  let seenTiles = new Set()
   let queue = []
 
   input.forEach((line, y) => {
@@ -101,19 +102,19 @@ function part2() {
 
   for (let i = 0; ; i++) {
     next.clear()
-    checked.clear()
+    seenTiles.clear()
 
     for (const [, item] of current) {
       let [x, y, z, w] = item
 
       const i = xyzwToMap(x, y, z, w)
-      checked.add(i)
+      seenTiles.add(i)
       queue.push(item)
     }
 
     while (queue.length > 0) {
       let [x, y, z, w] = queue.pop()
-      checkItem(x, y, z, w)
+      updateTile(x, y, z, w)
     }
 
     let tmp = next
@@ -123,7 +124,7 @@ function part2() {
     if (i === 5) return current.size
   }
 
-  function checkItem(x, y, z, w) {
+  function updateTile(x, y, z, w) {
     let count = countNeightbours(current, x, y, z, w)
     if (count === 0) return
 
@@ -144,8 +145,8 @@ function part2() {
         for (let zz = z - 1; zz <= z + 1; zz++) {
           for (let ww = w - 1; ww <= w + 1; ww++) {
             const i = xyzwToMap(xx, yy, zz, ww)
-            if (checked.has(i) === false) {
-              checked.add(i)
+            if (seenTiles.has(i) === false) {
+              seenTiles.add(i)
               queue.push([xx, yy, zz, ww])
             }
           }

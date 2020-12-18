@@ -38,12 +38,14 @@ function reduce(chars) {
     const pre = chars[i - 1]
     const post = chars[i + 3]
 
+    // Addition
     if (typeof a === 'number' && b === '+' && typeof c === 'number') {
       chars[i] = a + c
       chars.splice(i + 1, 2)
       continue
     }
 
+    // Multiplication
     if (
       typeof a === 'number' &&
       b === '*' &&
@@ -56,6 +58,7 @@ function reduce(chars) {
       continue
     }
 
+    // Unwrap paranthesis
     if (typeof b === 'number' && a === '(' && c === ')') {
       chars[i] = b
       chars.splice(i + 1, 2)

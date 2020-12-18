@@ -12,8 +12,6 @@ input.forEach(line => {
     .map(f => f.trim())
     .filter(f => f.length > 0)
 
-  console.log(chars)
-
   allSums += consume(createReader(0, chars), 0).value
 })
 
@@ -35,7 +33,6 @@ function consume(read) {
     if (op == null) return {value, next: firstCharReader}
 
     let {char: c2, next: opReader} = firstCharReader()
-    console.log({op, c2})
 
     let nextVal = 0
     if (c2 == null) return {value, next: opReader}

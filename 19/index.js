@@ -55,10 +55,10 @@ function run(part) {
 }
 
 function isMatchingList(line, startIndex, endIndex, rulesLeft) {
-  if (startIndex == endIndex && rulesLeft.length === 0) return true
+  if (startIndex === endIndex && rulesLeft.length === 0) return true
 
   if (rulesLeft.length === 0) return false
-  if (startIndex == endIndex) return false
+  if (startIndex === endIndex) return false
 
   for (let i = startIndex + 1; i < endIndex + 1; i++)
     if (
